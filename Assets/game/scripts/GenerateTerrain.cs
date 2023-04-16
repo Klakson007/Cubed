@@ -8,6 +8,7 @@ public class GenerateTerrain : MonoBehaviour
     public int size;
     public int lod;
     [SerializeField] MeshFilter meshFilter;
+    [SerializeField] MeshCollider meshCollider;
     int[] meshTriangles;
     Vector3[] vertices;
     public bool generate;
@@ -28,16 +29,17 @@ public class GenerateTerrain : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        gen(size, lod);
+        gen();
         Mesh mesh = new Mesh();
         //MeshFilter meshFilter = new MeshFilter();
         mesh.Clear();
         mesh.vertices = vertices;
         mesh.triangles = meshTriangles;
-        mesh.RecalculateBounds();
         mesh.RecalculateNormals();
+        //mesh.RecalculateBounds();
 
         meshFilter.mesh = mesh;
+        meshCollider.sharedMesh = mesh;
     }
 
     // Update is called once per frame
@@ -46,34 +48,36 @@ public class GenerateTerrain : MonoBehaviour
         if(generate)
         {
             generate = false;
-            gen(size, lod);
+            gen();
 
             Mesh mesh = new Mesh();
 
             mesh.Clear();
             mesh.vertices = vertices;
             mesh.triangles = meshTriangles;
-            mesh.RecalculateBounds();
             mesh.RecalculateNormals();
+            //mesh.RecalculateBounds();
 
             meshFilter.mesh = mesh;
+            meshCollider.sharedMesh = mesh;
         }
     }
     void OnValidate()
     {
-        gen(size, lod);
+        gen();
 
         Mesh mesh = new Mesh();
 
         mesh.Clear();
         mesh.vertices = vertices;
         mesh.triangles = meshTriangles;
-        mesh.RecalculateBounds();
         mesh.RecalculateNormals();
+        //mesh.RecalculateBounds();
 
         meshFilter.mesh = mesh;
+        meshCollider.sharedMesh = mesh;
     }
-    public void gen(int size, int lod)
+    public void gen()
     {
 
 
